@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sport: MyString
+  kickoff: 2018-09-08 23:38:57
+  title: MyString
+  competition: MyString
+
+two:
+  sport: MyString
+  kickoff: 2018-09-08 23:38:57
+  title: MyString
+  competition: MyString

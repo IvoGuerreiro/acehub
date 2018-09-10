@@ -1,0 +1,93 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Acehub - Acestream Sports aggregator</title>
+    <meta name="description" content="Acehub aggregates sport acestreams for all sports and events">
+    <meta name="author" content="Acehub">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
+
+</head>
+
+<body>
+<!-- .container is main centered wrapper -->
+<div id="app" class="container">
+
+    <h4>Startin soon:</h4>
+
+    <!-- columns should be the immediate child of a .row -->
+    <div v-for="match in matches">
+        <div class="row">
+            <div class="two columns"><h5>{{ match.kickoff | displayTime }}</h5></div>
+            <div class="six columns">
+                <h5>{{ match.title }}</h5>
+                <h6>{{ match.sport}} <span v-if="match.competition">/</span> {{ match.competition}}</h6>
+            </div>
+            <div class="four columns">
+            <span v-for="(stream, index) in match.streams">
+                <a :href="stream.url"> Stream #{{index + 1}}</a>
+                ({{ stream.extra_info}})
+                <br>
+            </span>
+
+            </div>
+        </div>
+        <hr>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            matches: [{"sport":"Football/Soccer","kickoff":"2018-09-09T05:31:16.000Z","title":"Benfica vs Turino","streams":[{"url":"acestream://899504vs0f938gjvd048g930f8vis9r39g9sdv9g8d0s","extra_info":"HD ESPN"},{"url":"acestream://899504vs0f938gjvd048g930f8vis9r39g9sdv9g8d0s","extra_info":"HD ESPN"},{"url":"acestream://899504vs0f938gjvd048g930f8vis9r39g9sdv9g8d0s","extra_info":"HD ESPN"}]}]
+        },
+        methods: {
+
+        },
+        filters: {
+            displayTime: function(timestamp) {
+
+                var date = new Date();
+                var offset = date.getTimezoneOffset();
+
+                date = new Date(timestamp*1000 - (offset * 60 * 1000));
+                date = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+
+                var hours = "0" + date.getHours();
+                var minutes = "0" + date.getMinutes();
+
+                var formattedTime = hours.substr(-2) + ':' + minutes.substr(-2);
+
+                return formattedTime;
+            }
+        },
+        mounted: function () {
+            axios.get('/matches')
+                .then(function (response) {
+                    // handle success
+                    console.log(response);
+                    app.matches = response.data;
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+        }
+    })
+</script>

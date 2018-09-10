@@ -1,5 +1,3 @@
-#!/home/jose/.rvm/rubies/ruby-2.2.4/bin/ ruby
-
 require 'mechanize'
 
 
