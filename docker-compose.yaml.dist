@@ -1,0 +1,69 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        apiurl: 'http:\/\/localhost:9001'
+    ports:
+    - "9000:80"
+  api:
+    build:
+      context: .
+    command: rails s
+    environment:
+      RAILS_ENV: production
+      DB_USERNAME: acehub
+      DB_PASSWORD:
+      DB_HOST: db
+      DB_NAME: acehub
+      SECRET_KEY_BASE:
+    ports:
+    - "9001:3000"
+  crawler_soccer:
+    build:
+      context: .
+    command: ["sh", "-c", "rake crawler:reddit_soccer ; sleep 5m"]
+    environment:
+      RAILS_ENV: production
+      DB_USERNAME: acehub
+      DB_PASSWORD:
+      DB_HOST: db
+      DB_NAME: acehub
+      SECRET_KEY_BASE:
+    restart: always
+  crawler_nfl:
+    build:
+      context: .
+    command: ["sh", "-c", "rake crawler:reddit_nfl ; sleep 5m"]
+    environment:
+      RAILS_ENV: production
+      DB_USERNAME: acehub
+      DB_PASSWORD:
+      DB_HOST: db
+      DB_NAME: acehub
+      SECRET_KEY_BASE:
+    restart: always
+  migrator:
+    build:
+      context: .
+    command: ["sh", "-c", "sleep 30 ; rake db:migrate"]
+    environment:
+      RAILS_ENV: production
+      DB_USERNAME: acehub
+      DB_PASSWORD: xptoxpto
+      DB_HOST: db
+      DB_NAME: acehub
+      SECRET_KEY_BASE:
+    restart: on-failure
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: acehub
+      MYSQL_USER: acehub
+      MYSQL_PASSWORD:
+    volumes:
+    - acedata:/var/lib/mysql
+volumes:
+  acedata:

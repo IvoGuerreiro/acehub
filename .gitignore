@@ -19,6 +19,7 @@
 .idea/*
 
 .byebug_history
+docker-compose.yaml
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

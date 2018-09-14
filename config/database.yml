@@ -13,20 +13,19 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
-  password: xpto
-  host: localhost
+  username: <%= ENV.fetch("DB_USERNAME") %>
+  password: <%= ENV.fetch("DB_PASSWORD") %>
+  host: <%= ENV.fetch("DB_HOST") %>
+  database: <%= ENV.fetch("DB_NAME") %>
 
 development:
   <<: *default
-  database: acehub_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: acehub_test
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -49,6 +48,4 @@ test:
 #
 production:
   <<: *default
-  database: acehub_production
-  username: acehub
-  password: <%= ENV['ACEHUB_DATABASE_PASSWORD'] %>
+

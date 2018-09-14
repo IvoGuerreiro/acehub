@@ -19,8 +19,15 @@
 <!-- .container is main centered wrapper -->
 <div id="app" class="container">
 
-    <h4>Startin soon:</h4>
-
+    <div class="row">
+        <div class="two columns">
+            <h5>Acehub</h5>
+        </div>
+        <div class="ten columns">
+            <p>This is a Acestream aggregator form reddit sport forums, this will make your tablet phone / TV acestream experience
+                much better without the need to copy long stream ids.</p>
+        </div>
+    </div>
     <!-- columns should be the immediate child of a .row -->
     <div v-for="match in matches">
         <div class="row">
@@ -52,7 +59,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            matches: [{"sport":"Football/Soccer","kickoff":"2018-09-09T05:31:16.000Z","title":"Benfica vs Turino","streams":[{"url":"acestream://899504vs0f938gjvd048g930f8vis9r39g9sdv9g8d0s","extra_info":"HD ESPN"},{"url":"acestream://899504vs0f938gjvd048g930f8vis9r39g9sdv9g8d0s","extra_info":"HD ESPN"},{"url":"acestream://899504vs0f938gjvd048g930f8vis9r39g9sdv9g8d0s","extra_info":"HD ESPN"}]}]
+            matches: []
         },
         methods: {
 
@@ -75,7 +82,7 @@
             }
         },
         mounted: function () {
-            axios.get('/matches')
+            axios.get('APIENDPOINT/matches')
                 .then(function (response) {
                     // handle success
                     console.log(response);

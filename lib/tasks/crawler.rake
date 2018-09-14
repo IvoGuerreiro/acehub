@@ -24,6 +24,8 @@ namespace :crawler do
 
       kickoff = now.change(hour: text[ini+1..ini+3], min: text[ini+4..ini+6])
 
+      kickoff += 1.day if kickoff < now - 2.hours
+
 
       match_page = agent.get('https://www.reddit.com' + m.last)
       stream_raw = match_page.search('body').text
@@ -95,6 +97,8 @@ namespace :crawler do
       puts "#{text[end_title_ix+1..end_title_ix+2]} #{text[end_title_ix+4..end_title_ix+5]}"
 
       kickoff = now.change(hour: text[end_title_ix+1..end_title_ix+2], min: text[end_title_ix+4..end_title_ix+5]).utc
+
+      kickoff += 1.day if kickoff < Time.now.utc - 2.hours
 
 
       match_page = agent.get('https://www.reddit.com' + m.last)
