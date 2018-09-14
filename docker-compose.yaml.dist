@@ -2,7 +2,7 @@ version: '3'
 services:
   frontend:
     build:
-      context: ./frontend
+      context: ./public
       args:
         apiurl: 'http:\/\/localhost:9001'
     ports:

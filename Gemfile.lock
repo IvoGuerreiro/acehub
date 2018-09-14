@@ -52,6 +52,7 @@ GEM
     crass (1.0.4)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.5.0)
     erubi (1.7.1)
     ffi (1.9.25)
     globalid (0.4.1)
@@ -161,6 +162,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
+  dotenv (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   mechanize (~> 2.7, >= 2.7.6)
   mysql2 (>= 0.4.4, < 0.6.0)

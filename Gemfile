@@ -44,3 +44,4 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'mechanize', '~> 2.7', '>= 2.7.6'
+gem 'dotenv', '~> 2.5'
