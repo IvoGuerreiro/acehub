@@ -10,26 +10,28 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"></script>
 
 
 </head>
 
-<body>
+<body style="background: #263238; color: #EEEEEE">
 <!-- .container is main centered wrapper -->
 <div id="app" class="container">
 
-    <div class="row">
+    <div class="row" style="text-align: justify; text-justify: inter-word">
         <div class="two columns">
-            <h5>Acehub</h5>
+            <h4>ACEHUB</h4>
         </div>
         <div class="ten columns">
             <p>This is a Acestream aggregator form reddit sport forums, this will make your tablet phone / TV acestream experience
                 much better without the need to copy long stream ids.</p>
+            <small>Streams will appear a soon as matches are about to start. (this site auto-updates every 5 min)</small>
         </div>
     </div>
+    <br>
     <!-- columns should be the immediate child of a .row -->
-    <div v-for="match in matches">
+    <div v-if="ready" v-for="match in matches">
         <div class="row">
             <div class="two columns"><h5>{{ match.kickoff | displayTime }}</h5></div>
             <div class="six columns">
@@ -39,13 +41,17 @@
             <div class="four columns">
             <span v-for="(stream, index) in match.streams">
                 <a :href="stream.url"> Stream #{{index + 1}}</a>
-                ({{ stream.extra_info}})
+                <span v-if="stream.extra_info">({{ stream.extra_info}})</span>
                 <br>
             </span>
 
             </div>
         </div>
         <hr>
+    </div>
+
+    <div v-if="ready && matches.length == 0" style="text-align: center">
+        <h4>There are no matches being streamed right now :(</h4>
     </div>
 
 
@@ -59,10 +65,28 @@
     var app = new Vue({
         el: '#app',
         data: {
-            matches: []
+            matches: [],
+            last_update: null,
+            ready: false
         },
         methods: {
-
+            updateMatches: function() {
+                axios.get('APIENDPOINT/matches')
+                    .then(function (response) {
+                        // handle success
+                        console.log(response);
+                        app.matches = response.data;
+                        app.ready = true;
+                        app.last_update = new Date();
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            }
         },
         filters: {
             displayTime: function(timestamp) {
@@ -82,19 +106,11 @@
             }
         },
         mounted: function () {
-            axios.get('APIENDPOINT/matches')
-                .then(function (response) {
-                    // handle success
-                    console.log(response);
-                    app.matches = response.data;
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-                .then(function () {
-                    // always executed
-                });
+            this.updateMatches();
+
+            setInterval(function() {
+                app.updateMatches();
+            }, 180*1000)
         }
     })
 </script>
