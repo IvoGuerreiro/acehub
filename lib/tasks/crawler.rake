@@ -4,7 +4,7 @@ namespace :crawler do
   task reddit_soccer: :environment do
 
 
-    endpoints = %w[https://www.reddit.com/r/soccerstreams_pl/ https://www.reddit.com/r/soccerstreams_pl/]
+    endpoints = %w[https://www.reddit.com/r/soccerstreams_pl/ https://www.reddit.com/r/soccerstreams_other]
     agent = Mechanize.new
 
 
